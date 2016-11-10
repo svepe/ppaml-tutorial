@@ -40,22 +40,58 @@
 ;;; 
 ;;; ## Probabilistic Programming
 ;;;   
-;;; The main goal of probabilistic programming (PP) is to bridge the gap between the theoretical desing and the actual implementation of a probabilistic model. PP enables fast design-verify cycles which allow you to spend significantly more time thinking about the actual problem you want to solve rather than fighting with code.
+;;; The main goal of probabilistic programming (PP) is to bridge the gap between the theoretical desing and the actual implementation of a probabilistic model. PP enables fast design-verify cycles which allows you to spend significantly more time thinking about the actual problem you want to solve rather than fighting with code.
 ;;; 
 ;;; 
+;;; <div style="text-align:center">
+;;; 	<img src="https://raw.github.com/svepe/radpp/master/resources/intro/pp-venn.png" style="width: 30%"/>
+;;; </div>
 ;;; 
+;;; There are numerous probabilistic programming languages ([extensive list](http://probabilistic-programming.org/wiki/Home)) which can be classified by several features:
 ;;; 
+;;; * Supported probabilistic models
+;;; * Inference engine
+;;; * Dynamic model structure
 ;;; 
+;;; Probabilistic programming intuitively fits to the paradigm of generative modelling which we are going to explore throughout the seminar series.
 ;;; 
+;;; ## Anglican 
 ;;; 
+;;; During the seminars we will use [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican/) <img src="http://www.robots.ox.ac.uk/~fwood/anglican/assets/images/anglican_logo.png" style="width: 2%"/> which is a high-order probobailistic language implemented as a domain specific language (DSL) in Clojure. It supports 10+ inference algorithms, all based on sampling, and a large number of probabilisitic primitives. Additionally, it can cope with models that change over time and have a varying number of unknown variables. 
 ;;; 
+;;; ## Clojure
 ;;; 
+;;; [Clojure](http://clojure.org/>) <img src="http://clojure.org/images/clojure-logo-120b.png" style="width: 3%"/> is a functional language which runs on the virtual machine. Why should you care about it - it is simply yet another language? Actually, Clojure is well ballanced mixture between extremely powerful abstract concepts such as metaprogramming and down-to-Earth practical aspects such as compatibility with the entire Java world. My personal opinion is that functional languages have been surprisingly underused by the machine learning community, mainly due to the simplicity of Python. Having particularly Clojure in mind, here are the reasons why I think so.
 ;;; 
+;;; * Write mainly critical code, focus on the problem:
 ;;; 
+;;;     ```
+;;;     // C++                                            ;; Clojure
+;;;     for (size_t i = 0; i < array.size(); ++i)         (map #(* 2 %) array)
+;;;   	  array[i] = array[i] * 2
+;;;     ```
+;;; 
+;;; * Machine learning is essentially applying function after function to your data. Why not use a language that is designed around the notion of a function?
+;;; 
+;;; * Functional programming advocates code with no side affects!
+;;;   * Fewer bugs
+;;;   * Parallelisation is often natural
+;;;   * Offload work to the operating system (most of your variables are on the stack)
+;;;   
+;;; * Clojure is designed for concurency and parallelism
+;;; 
+;;; * Data structures
+;;;   
+;;;   
+;;; * ***Metaprogramming***
 ;;; 
 ;; **
 
 ;; @@
 (ns undisturbed-beach
   (:require [gorilla-plot.core :as plot]))
+;; @@
+
+;; @@
+
 ;; @@
