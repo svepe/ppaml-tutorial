@@ -1,12 +1,3 @@
-# RAD Probabilistic Programming Seminar
+Worksheets for the RAD seminar on probabilistic probramming.
 
-A series of seminars introducing probabilistic programming and teaching Anglican.
-
-### Contnents:
-
-1. Introduction to Clojure
-2. Generative Modelling & Introduction to Anglican
-3. Inference & Anglican Design
-4. Machine Learning Examples
-
-
+The worksheets are based on the materials for the [Probabilistic Programming for Advanced Machine Learning 2016 (PPAML16) summerschool](http://ppaml.galois.com/wiki/wiki/SummerSchools/2016/LectureMaterials), which you can find [here](https://bitbucket.org/probprog/ppaml-summer-school-2016).
