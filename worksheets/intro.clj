@@ -61,34 +61,28 @@
 ;;; 
 ;;; ## Clojure
 ;;; 
-;;; [Clojure](http://clojure.org/>) <img src="http://clojure.org/images/clojure-logo-120b.png" style="width: 3%"/> is a functional language which runs on the virtual machine. Why should you care about it - it is simply yet another language? Actually, Clojure is well ballanced mixture between extremely powerful abstract concepts such as metaprogramming and down-to-Earth practical aspects such as compatibility with the entire Java world. My personal opinion is that functional languages have been surprisingly underused by the machine learning community, mainly due to the simplicity of Python. Having particularly Clojure in mind, here are the reasons why I think so.
+;;; [Clojure](http://clojure.org/>) <img src="http://clojure.org/images/clojure-logo-120b.png" style="width: 3%"/> is a functional language which runs on the virtual machine, essentially a modern LISP. Why should you care about it - it is simply yet another language? Actually, Clojure is a well ballanced mixture between extremely powerful abstract concepts such as metaprogramming and down-to-Earth practical aspects such as compatibility with the entire Java world. My personal opinion is that functional languages have been surprisingly underused by the machine learning community, mainly due to the simplicity of Python. Having Clojure particularly in mind, here are the reasons why I think so.
 ;;; 
 ;;; * Write mainly critical code, focus on the problem:
-;;; 
 ;;;     ```
 ;;;     // C++                                            ;; Clojure
 ;;;     for (size_t i = 0; i < array.size(); ++i)         (map #(* 2 %) array)
 ;;;   	  array[i] = array[i] * 2
 ;;;     ```
-;;; 
-;;; * Machine learning is essentially applying function after function to your data. Why not use a language that is designed around the notion of a function?
-;;; 
-;;; * Functional programming advocates code with no side affects!
-;;;   * Fewer bugs
+;;; * ML is essentially applying function after function to your data. Why not use a language where functions are first-class citizens?
+;;; * Functional programming advocates code with no side affects (fewer bugs!):
+;;;   * Immutable data
+;;;   * State and identity
 ;;;   * Parallelisation is often natural
-;;;   * Offload work to the operating system (most of your variables are on the stack)
-;;;   
-;;; * Clojure is designed for concurency and parallelism
-;;; 
-;;; * Data structures
-;;;   
-;;;   
+;;; * Clojure is designed for working with data and provides extremely efficient data structures.
+;;; * The filter-map-reduce mantra
 ;;; * ***Metaprogramming***
+;;;   * Anglican is a metaprogram!
 ;;; 
 ;; **
 
 ;; @@
-(ns undisturbed-beach
+j(ns undisturbed-beach
   (:require [gorilla-plot.core :as plot]))
 ;; @@
 
