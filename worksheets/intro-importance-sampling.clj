@@ -107,6 +107,11 @@
 ;;; \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\] = \frac{1}{\sum_j^N w_j(\theta)} \sum_i^{N} f(\theta_i) w(\theta_i) \hspace{0.5cm} \text{ where } \hspace{0.5cm} \theta_i \sim q(\theta)
 ;;; $$
 ;;; 
+;;; ---
+;;; **MATH EXERCISE** Show that the average of the unnormalized importance weights is an unbiased estimate of the   evidence (i.e. of the normalizing constant for the posterior distribution): that is, show that
+;;; $$\mathbb{E}\left[\frac{1}{N} \sum\_{i=1}^N w(\theta\_i)\right] = p(\mathcal{D})$$
+;;; 
+;;; ---
 ;;; 
 ;;; It is common to use the prior as a proposal distribution
 ;;; 
@@ -343,8 +348,10 @@
 (def importance-samples 
   (take 1000 (doquery :importance many-flips [data])))
 
-(frequencies
-  (map :result importance-samples))
+
+(empirical-distribution
+  (collect-results 
+    importance-samples))
 ;; @@
 
 ;; **
@@ -362,7 +369,7 @@
     (map (fn [y] 
            (observe outcome-dist y)) 
          y-values)
-    theta))
+    theta)) ; This query returns theta itself
 
 (def importance-samples 
   (take 1000 (doquery :importance many-flips [data])))
@@ -370,8 +377,26 @@
 (plot/histogram 
   (map :result importance-samples)
   :bins 20 :normalize :probability)
+;; @@
+
+;; **
+;;; But this plot seems to be the prior on @@\theta@@! We need to take into account the weight of each sample when plotting the histogram. We will generate a new set of samples, where the number of appearances of each sample will be proportional to its weight. We will **resample** our samples in order to get rid of their w
+;; **
+
+;; @@
+(defn resample [N values weights]
+  (let [dist (categorical (map list values weights))]
+    (repeatedly N #(sample* dist))))
+;; @@
+
+;; @@
+(def weightless-samples
+	(let [dist (empirical-distribution
+  			   	 (collect-results 
+        	       importance-samples))]
+  		(resample 1000 (keys dist) (vals dist))))
 
 (plot/histogram 
-  (map #(exp (:log-weight %)) importance-samples)
+  weightless-samples
   :bins 20 :normalize :probability)
 ;; @@
