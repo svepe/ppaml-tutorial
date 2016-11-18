@@ -1,17 +1,39 @@
 ;; gorilla-repl.fileformat = 1
 
-;; @@
-(ns importance-sampling
-  (:require [gorilla-plot.core :as plot])
-  (:use [anglican core runtime emit stat]))
-;; @@
-
 ;; **
-;;; # Importance Sampling
+;;; # Importance Sampling and Anglican
 ;;; 
 ;; **
 
 ;; **
+;;; ## Basics of Probability Theory
+;;; * Conditional probability:
+;;; 
+;;; $$
+;;; \begin{alignat}{3}
+;;; p(y, x) &= p(y | x)p(x) &= p(x | y)p(y) \quad & \\\\
+;;; \frac{p(y, x)}{p(x)} &= p(y | x) & \\\\
+;;; & \hspace{1cm} p(y | x) &= \frac{p(x | y)p(y)}{p(x)} &
+;;; \end{alignat}
+;;; $$
+;;; 
+;;; 
+;;; 
+;;; * Marginalisation:
+;;; 
+;;; $$
+;;; p(y) = \int p(y, x) dx
+;;; $$
+;;; 
+;;; * Expected value:
+;;; 
+;;; $$
+;;; \mathbb{E}_{x \sim p(x)} \[f(x)\] = \int f(x)p(x) dx
+;;; $$
+;; **
+
+;; **
+;;; ## Imprtance Sampling
 ;;; As we saw last time, the posterior over some latent variables can be expressed as
 ;;; 
 ;;; $$ 
@@ -25,26 +47,28 @@
 ;;; p(\mathcal{D} | \theta) p(\theta)
 ;;; $$
 ;;; 
-;;; Now if we have to predict the probability of a new value we should marginalise the latent variables
+;;; If we have to predict the probability of a new value we should marginalise the latent variables out
 ;;; 
 ;;; $$
 ;;; p(x' | \mathcal{D}) = \int p(x', \theta | \mathcal{D})d \theta = \int p(x' | \theta, \mathcal{D}) p(\theta | \mathcal{D}) d \theta = \mathbb{E}_{\theta \sim p(\theta | \mathcal{D})} \[p(x' | \theta, \mathcal{D})\]
 ;;; $$
 ;;; 
-;;; Predicting new datapoints is only one of the numerous applications of the posterior distribution. It turns out, that we are often interested in an expected value with respect to the posterior distribution
+;;; Predicting new datapoints is only one of the numerous applications of the posterior distribution. It turns out, that we are often interested in an expected value with respect to the posterior distribution, rather than the distribution itself,
 ;;; 
 ;;; $$
 ;;; \mathbb{E}_{\theta \sim p(\theta | \mathcal{D})} \[f(\theta)\] = \int p(\theta | \mathcal{D}) f(\theta) d\theta
 ;;; $$
 ;;; 
-;;; Now we can introduce a proposal distribution and take the expected value with respect to it instead
+;;; This integral rarely has a closed form solution, however we can come up with an estimate of its value using importance sampling and Monte Carlo approximation. The key idea is to introduce a proposal distribution and take the expected value with respect to it instead
 ;;; 
 ;;; $$
-;;; \int p(\theta | \mathcal{D}) f(\theta) d\theta = 
-;;; \int p(\theta | \mathcal{D}) f(\theta) \frac{q(\theta)}{q(\theta)} d\theta = 
-;;; \int \frac{p(\theta | \mathcal{D})}{q(\theta)} f(\theta) q(\theta) d\theta =
-;;; \int W(\theta) f(\theta) q(\theta) d\theta = 
-;;; \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\] 
+;;; \begin{align}
+;;; \int p(\theta | \mathcal{D}) f(\theta) d\theta &= 
+;;; \int p(\theta | \mathcal{D}) f(\theta) \frac{q(\theta)}{q(\theta)} d\theta \\\\
+;;; &= \int \frac{p(\theta | \mathcal{D})}{q(\theta)} f(\theta) q(\theta) d\theta \\\\
+;;; &= \int W(\theta) f(\theta) q(\theta) d\theta = \\\\
+;;; &= \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\]
+;;; \end{align}
 ;;; $$
 ;;; 
 ;;; where 
@@ -65,7 +89,7 @@
 ;;; p(\theta | \mathcal{D}) \propto p(\mathcal{D} | \theta) p(\theta) = p(\theta, \mathcal{D})
 ;;; $$
 ;;; 
-;;; and so we define non-normalised "importance weight"
+;;; and so we define non-normalised "importance weight" as
 ;;; 
 ;;; $$
 ;;; w(\theta) = \frac{p(\theta, \mathcal{D})}{q(\theta)}
@@ -160,6 +184,12 @@
 ;;; 
 ;;; Below are some example distribution primitives; these are sufficient to solve the exercises.  A full list of built-in primitives can be found [here](http://www.robots.ox.ac.uk/~fwood/anglican/language/index.html).
 ;; **
+
+;; @@
+(ns importance-sampling
+  (:require [gorilla-plot.core :as plot])
+  (:use [anglican core runtime emit stat]))
+;; @@
 
 ;; @@
 ;; Draw from a normal distribution with mean 1 and standard deviation 2:
@@ -318,7 +348,7 @@
 ;; @@
 
 ;; **
-;;; ## Visualizing Results
+;;; ## Visualising Results
 ;; **
 
 ;; **
