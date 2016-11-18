@@ -115,7 +115,7 @@
 ;;; $$
 ;;; 
 ;;; which is simply the likelihood. This method is often referred to as **likelihood weighting**. In order to estimate the expected value of a function with respect to the posterior all you need to do is:
-;;; 1. sample you prior
+;;; 1. sample you prior - **generate latent variables**
 ;;; 2. weigh each sample according to the data likelihood
 ;;; 3. normalise the importance weights
 ;;; 4. calculate the weighted mean
@@ -124,7 +124,7 @@
 ;; **
 
 ;; **
-;;; ## Coin flip
+;;; ## Coin Flip: A Generative View
 ;;; 
 ;;; Consider the outcome of a coin flip experiment
 ;;; 
@@ -138,13 +138,13 @@
 ;;; \theta \sim \mathrm{Beta}(5,3) 
 ;;; $$
 ;;; 
-;;; Now let's consider the following query 
+;;; Having this infromation, we can **simulate** as many coin flip trials as we need. We will be **generating** outcome values and compare them with the actual observed data in order to answer various probabilistic queries. Let's consider the following query 
 ;;; 
 ;;; $$
 ;;; p(\theta>0.7 | y = true) = ?
 ;;; $$
 ;;; 
-;;; For this we can easily look up and/or compute the ground truth = 
+;;; For this we can easily look up and/or compute the ground truth 
 ;;; 
 ;;; $$
 ;;; p(\theta>0.7 | y = true) = 0.448 = 1 - \mathrm{BetaCDF}(6,3,0.7)
