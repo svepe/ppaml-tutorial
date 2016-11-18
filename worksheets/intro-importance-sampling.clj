@@ -1,14 +1,18 @@
 ;; gorilla-repl.fileformat = 1
 
+;; @@
+(ns importance-sampling
+  (:require [gorilla-plot.core :as plot])
+  (:use [anglican core runtime emit stat]))
+;; @@
+
 ;; **
 ;;; # Importance Sampling
-;;; 
-;;; 
 ;;; 
 ;; **
 
 ;; **
-;;; As we saw last time, the posterior over some latent variables can be expressed as:
+;;; As we saw last time, the posterior over some latent variables can be expressed as
 ;;; 
 ;;; $$ 
 ;;; p(\theta | \mathcal{D}) = 
@@ -21,29 +25,114 @@
 ;;; p(\mathcal{D} | \theta) p(\theta)
 ;;; $$
 ;;; 
+;;; Now if we have to predict the probability of a new value we should marginalise the latent variables
+;;; 
+;;; $$
+;;; p(x' | \mathcal{D}) = \int p(x', \theta | \mathcal{D})d \theta = \int p(x' | \theta, \mathcal{D}) p(\theta | \mathcal{D}) d \theta = \mathbb{E}_{\theta \sim p(\theta | \mathcal{D})} \[p(x' | \theta, \mathcal{D})\]
+;;; $$
+;;; 
+;;; Predicting new datapoints is only one of the numerous applications of the posterior distribution. It turns out, that we are often interested in an expected value with respect to the posterior distribution
+;;; 
+;;; $$
+;;; \mathbb{E}_{\theta \sim p(\theta | \mathcal{D})} \[f(\theta)\] = \int p(\theta | \mathcal{D}) f(\theta) d\theta
+;;; $$
+;;; 
+;;; Now we can introduce a proposal distribution and take the expected value with respect to it instead
+;;; 
+;;; $$
+;;; \int p(\theta | \mathcal{D}) f(\theta) d\theta = 
+;;; \int p(\theta | \mathcal{D}) f(\theta) \frac{q(\theta)}{q(\theta)} d\theta = 
+;;; \int \frac{p(\theta | \mathcal{D})}{q(\theta)} f(\theta) q(\theta) d\theta =
+;;; \int W(\theta) f(\theta) q(\theta) d\theta = 
+;;; \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\] 
+;;; $$
+;;; 
+;;; where 
+;;; 
+;;; $$
+;;; W(\theta) = \frac{p(\theta | \mathcal{D})}{q(\theta)}
+;;; $$
+;;; 
+;;; is defined as an "importance weight". Using a Monte Carlo estimator, we have
+;;; 
+;;; $$
+;;; \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\] = \frac{1}{N} \sum_i^{N} f(\theta_i) W(\theta_i) \hspace{0.5cm} \text{ where } \hspace{0.5cm} \theta_i \sim q(\theta)
+;;; $$
+;;; 
+;;; Typically, we can evaluate the posterior only up to a constant
+;;; 
+;;; $$
+;;; p(\theta | \mathcal{D}) \propto p(\mathcal{D} | \theta) p(\theta) = p(\theta, \mathcal{D})
+;;; $$
+;;; 
+;;; and so we define non-normalised "importance weight"
+;;; 
+;;; $$
+;;; w(\theta) = \frac{p(\theta, \mathcal{D})}{q(\theta)}
+;;; $$
+;;; 
+;;; resulting in
+;;; 
+;;; $$
+;;; W(\theta) = \frac{w(\theta)}{\sum_{i=1}^N w_i(\theta)}
+;;; $$
+;;; 
+;;; and
+;;; 
+;;; $$
+;;; \mathbb{E}_{\theta \sim q(\theta)} \[W(\theta)f(\theta)\] = \frac{1}{\sum_j^N w_j(\theta)} \sum_i^{N} f(\theta_i) w(\theta_i) \hspace{0.5cm} \text{ where } \hspace{0.5cm} \theta_i \sim q(\theta)
+;;; $$
+;;; 
+;;; 
+;;; It is common to use the prior as a proposal distribution
+;;; 
+;;; $$
+;;; q(\theta)=p(\theta) \implies w(\theta) = \frac{p(\theta, \mathcal{D})}{q(\theta)} = \frac{p(\theta, \mathcal{D})}{p(\theta)} = p(\mathcal{D} | \theta)
+;;; $$
+;;; 
+;;; which is simply the likelihood. This method is often referred to as **likelihood weighting**. In order to estimate the expected value of a function with respect to the posterior all you need to do is:
+;;; 1. sample you prior
+;;; 2. weigh each sample according to the data likelihood
+;;; 3. normalise the importance weights
+;;; 4. calculate the weighted mean
+;;; 
+;;; Now let's see how we can use importance sampling in Anglican by studying a simple coin flip model.
 ;; **
 
 ;; **
+;;; ## Coin flip
+;;; 
+;;; Consider the outcome of a coin flip experiment
+;;; 
+;;; $$
+;;; y \sim \mathrm{Bernoulli}(\theta)
+;;; $$
+;;; 
+;;; where our belief about the bias of the coin is
+;;; 
+;;; $$
+;;; \theta \sim \mathrm{Beta}(5,3) 
+;;; $$
+;;; 
+;;; Now let's consider the following query 
+;;; 
+;;; $$
+;;; p(\theta>0.7 | y = true) = ?
+;;; $$
+;;; 
+;;; For this we can easily look up and/or compute the ground truth = 
+;;; 
+;;; $$
+;;; p(\theta>0.7 | y = true) = 0.448 = 1 - \mathrm{BetaCDF}(6,3,0.7)
+;;; $$
 ;;; 
 ;; **
-
-;; @@
-
-;; @@
-
-;; @@
-
-;; @@
-
-;; @@
-(ns hello-world
-  (:require [gorilla-plot.core :as plot])
-  (:use [anglican core runtime emit stat]))
-;; @@
 
 ;; **
 ;;; ## Anglican overview
-;;; 
+;; **
+
+;; **
 ;;; The Anglican system consists of three main components:
 ;;; 
 ;;; 1. A [language](http://www.robots.ox.ac.uk/~fwood/anglican/language/index.html) for defining probabilistic programs. This language implements a large subset of the language features in Clojure. We refer to an Anglican program as a *query*.
@@ -61,13 +150,13 @@
 ;;; 
 ;;; 1. `sample*` generates a sample from the distribution. For example `(sample* (normal 0.0 1.0))` draws a standard normal random variate.
 ;;; 
-;;; 2. `observe*` computes the log probability of a sample. For example `(observe (normal 0.0 1.0) 3.0)` returns the log probability of the value `3.0` under the distribution `(normal 0.0 1.0)`.
+;;; 2. `observe*` computes the log probability of a sample. For example `(observe* (normal 0.0 1.0) 3.0)` returns the log probability of the value `3.0` under the distribution `(normal 0.0 1.0)`.
 ;;; 
 ;;; In an Anglican program, there are two *special forms* that interact with distribution objects
 ;;; 
 ;;; 1. `sample` asks the inference backend to generate a sample from the distribution. By default the backend does this by simply calling the Clojure function `sample*`. However in some inference algorithms the backend may resuse a previously sampled value, or sample from a learned proposal.
 ;;; 
-;;; 2. `observe` askes the inference backend to update the log probability of the current execution according the the log probability that can be calculated using the Clojure function `observe*`.
+;;; 2. `observe` asks the inference backend to update the log probability of the current execution according the the log probability that can be calculated using the Clojure function `observe*`.
 ;;; 
 ;;; Below are some example distribution primitives; these are sufficient to solve the exercises.  A full list of built-in primitives can be found [here](http://www.robots.ox.ac.uk/~fwood/anglican/language/index.html).
 ;; **
@@ -114,22 +203,16 @@
 ;; **
 
 ;; **
-;;; Let's use Anglican (and what we've learned) to pose a simple statistical query under the model
+;;; Probabilistic models written in Anglican are called `queries`, and are defined using `defquery`. Here is the model again
 ;;; 
 ;;; $$\begin{align}\theta &\sim \mathrm{Beta}(5,3) \\\\
 ;;; y &\sim \mathrm{Bernoulli}(\theta)\end{align}$$
+;;; $$p(\theta>0.7 | y = true) = ?$$
 ;;; 
-;;; and ask 
+;;; with ground truth answer 0.448.
 ;;; 
-;;; $$p(\theta>0.7 | y = true).$$
+;;; The following program defines the statistical model:
 ;;; 
-;;; For this we can easily look up and/or compute the ground truth = 
-;;; 
-;;; $$p(\theta>0.7 | y = true) = .448 = 1-\mathrm{betacdf}(6,3,0.7)$$
-;;; 
-;;; Probabilistic models written in Anglican are called `queries`, and are defined using `defquery`.
-;;; 
-;;; The following program defines the statistical model above:
 ;; **
 
 ;; @@
@@ -154,81 +237,21 @@
 ;; **
 
 ;; **
-;;; ## Sampling from the posterior
-;;; 
-;;; 
-;; **
-
-;; **
-;;; The `doquery` command can be used to perform inference on a query with a specified algorithm
+;;; ## Importance Sampling with Anglican
 ;; **
 
 ;; @@
-(def rmh-samples
-  (take 1000
-        (doquery :rmh one-flip [true])))
-;; @@
-
-;; **
-;;; The `doquery` command defines an infinite lazy sequence, of which we grab 1000 samples.  **Important**: Do not try to print out or directly evaluate the output from a `doquery` call – this will try to print out an infinite sequence.
-;;; 
-;;; We here use the `:rmh` algorithm to perform inference. Inference algorithms can accept various optional arguments which are used to specify the algorithm used for posterior sampling. Sensible values for these are provided in all exercises, and all different options are described in the [inference algorithms documentation](http://www.robots.ox.ac.uk/~fwood/anglican/language/index.html).
-;; **
-
-;; **
-;;; Each sample returned by `doquery` is a hashmap with three entries
-;; **
-
-;; @@
-(first rmh-samples)
-;; @@
-
-;; **
-;;; The `:result` entry contains the return value for each program execution. The `:log-weight` entry contains the corresponding log probability. The `:predict` key stores the output of `(predict ...)` commands, which we ill get back to later in this workbook. 
-;;; 
-;;; Now that you have generated your first set of samples, you can now get a posterior estimate by extracting the `:result` value from each sample, e.g.  
-;; **
-
-;; @@
-(frequencies
-  (map :result
-       rmh-samples))
-;; @@
-
-;; **
-;;; here, `frequencies` is a standard Clojure function that counts the number of occurences of each unique element in a sequence. 
-;; **
-
-;; **
-;;; ## Importance Sampling
-;; **
-
-;; **
-;;; Anglican provides different classes of inference methods. MCMC methods, such as `:rmh` return unweighted samples, whereas importance sampling methods, such as `:importance` and `:smc` return weighted samples:
-;; **
-
-;; @@
-(def rmh-samples
-  (take 1000
-	    (doquery :rmh one-flip [true])))
-
 (def importance-samples
   (take 1000
 	    (doquery :importance one-flip [true])))
-
-(first rmh-samples)
 (first importance-samples)
 ;; @@
 
 ;; **
-;;; If you naively average over weighted samples, you will get incorrect results
+;;; If you want to count the number of samples you can use the Clojure built-in function `frequencies`
 ;; **
 
 ;; @@
-(frequencies
-  (map :result
-       rmh-samples))
-
 (frequencies
   (map :result
        importance-samples))
@@ -250,49 +273,7 @@
 ;; @@
 (empirical-distribution
   (collect-results 
-    rmh-samples))
-
-(empirical-distribution
-  (collect-results 
     importance-samples))
-;; @@
-
-;; **
-;;; Finally, you can use the `(predict ...)` special form to define additional outputs in the program. Unlike the `:result` value, these outputs do not have to be define at the end of the program. For example:
-;; **
-
-;; @@
-(defquery many-flips [y-values]
-  (let [theta (sample (beta 5 3))
-        outcome-dist (flip theta)]
-    (predict :theta theta)
-    (map (fn [y] 
-           (observe outcome-dist y)) 
-         y-values)
-    (> theta 0.7)))
-;; @@
-
-;; **
-;;; You will now see an entry under `:predicts` in the returned samples
-;; **
-
-;; @@
-(first 
-  (doquery :importance many-flips 
-           [[true true true]]))
-;; @@
-
-;; **
-;;; Anglican provides a function called `get-predicts`, in `anglican.state`, which turns the predicts as a hashmap
-;; **
-
-;; @@
-(require '[anglican.state :refer [get-predicts]])
-
-(get-predicts
-  (first 
-    (doquery :importance 
-             many-flips [[true true true]])))
 ;; @@
 
 ;; **
@@ -307,7 +288,7 @@
 ;;; 
 ;;; $$p(\theta>0.7 | x\_i)$$
 ;;; 
-;;; for some sequence @@x\_i@@. Now, we let `outcomes`, the argument to our query, be a sequence, and we can use `map` (or `loop` and `recur`) to `observe` all different outcomes.
+;;; for some sequence @@x\_i@@. Now, we let `y-values`, the argument to our query, be a sequence, and we can use `map` (or `loop` and `recur`) to `observe` all different outcomes.
 ;;; 
 ;;; Here's one way of writing this:
 ;; **
@@ -329,11 +310,11 @@
 ;; @@
 (def data [true, false, false, true])
 
-(def rmh-samples 
-  (take 1000 (doquery :rmh many-flips [data])))
+(def importance-samples 
+  (take 1000 (doquery :importance many-flips [data])))
 
 (frequencies
-  (map :result rmh-samples))
+  (map :result importance-samples))
 ;; @@
 
 ;; **
@@ -341,11 +322,7 @@
 ;; **
 
 ;; **
-;;; A rudimentary plotting capability comes as part of [Gorilla REPL](http://gorilla-repl.org/).  Here we use a histogram plot to show the posterior distribution on `theta`.
-;; **
-
-;; **
-;;; 
+;;; A rudimentary plotting capability comes as part of [Gorilla REPL](http://gorilla-repl.org/). The documentation for the supported plotting functionality is available [here](http://gorilla-repl.org/plotting.html). If you are interested in more advanced plotting, then your best option is to export your data to JSON or CSV and then use matplotlib with Python.
 ;; **
 
 ;; @@
@@ -357,117 +334,14 @@
          y-values)
     theta))
 
-(def rmh-samples 
-  (take 1000 (doquery :rmh many-flips [data])))
+(def importance-samples 
+  (take 1000 (doquery :importance many-flips [data])))
 
 (plot/histogram 
-  (map :result rmh-samples)
+  (map :result importance-samples)
   :bins 20 :normalize :probability)
-;; @@
 
-;; **
-;;; That's it! Now move onto the exercises, or take a look at some of the advanced usage examples below. Keep this worksheet open in a separate tab or window, and refer to it for language reference.
-;; **
-
-;; **
-;;; ## Advanced Usage: predict
-;; **
-
-;; **
-;;; Anglican allows you to define additional program outputs using the `predict` command
-;; **
-
-;; @@
-(defquery many-flips [y-values]
-  (let [theta (sample (beta 5 3))
-        outcome-dist (flip theta)]
-    (predict :theta theta)
-    (map (fn [y] 
-           (observe outcome-dist y)) 
-         y-values)
-    (> theta 0.7)))
-;; @@
-
-;; **
-;;; The values associated with `predict` commands are stored in the `:predict`
-;; **
-
-;; @@
-(def rmh-samples 
-  (take 1000 (doquery :rmh many-flips [data])))
-
-(first rmh-samples)
-;; @@
-
-;; **
-;;; You can extract these values using the `get-predicts` function in `anglican.state`
-;; **
-
-;; @@
-(require '[anglican.state :refer [get-predicts]])
-
-(get-predicts (first rmh-samples))
-;; @@
-
-;; **
-;;; Anglican also provides `collect-predicts`, which is the analogue of `collect-results`
-;; **
-
-;; @@
-(empirical-mean
-  (collect-predicts 
-    :theta
-    rmh-samples))
-
-(empirical-std
-  (collect-predicts 
-    :theta
-    rmh-samples))
-;; @@
-
-;; **
-;;; ## Andvanced Usage: conditional
-;;; 
-;;; 
-;;; The `conditional` function takes a query and returns a distribution object constructor (think of the returned object as a factory for conditional/parameterized distributions). 
-;;; 
-;;; The following line defines `one-flip-posterior` as a distribution constructor which will draw posterior samples from the distribution defined by our query above, using the Lightweight Metropolis-Hastings (`:lmh`) algorithm.
-;; **
-
-;; @@
-(require 'anglican.rmh)
-(def one-flip-posterior (conditional many-flips :rmh))
-;; @@
-
-;; **
-;;; The object we just created plays the same role as `normal`, `flip`, or other built-in distribution constructors (except one can only `sample` but not `observe` from distributions created using `conditional`).
-;;; 
-;;; To actually create the posterior distribution itself, we create a distribution object which takes the query argument `outcome`. 
-;;; 
-;;; This is analogous to how when creating a normal distribution we must specify the mean and standard deviation, e.g. `(normal 0 1)`. Here, we specify whether our one outcome was true or false.
-;; **
-
-;; @@
-(def true-flip-posterior (one-flip-posterior data))
-;; @@
-
-;; **
-;;; Now, we can draw samples just as we would draw samples from a distribution created by calling `(normal 0 1)`. A sample from a conditional distribution defined in this way returns a key-value map, where the keys are the same as those specified in the `predict` statements.
-;;; 
-;;; To index into a hashmap in Clojure, just use the key as a function.
-;; **
-
-;; @@
-;; Draw one sample (returns true or false):
-(sample* true-flip-posterior)
-;; @@
-
-;; **
-;;; Sampling repeatedly from this distribution object characterizes the distribution.	
-;; **
-
-;; @@
-(frequencies (repeatedly 
-               1000
-               #(sample* true-flip-posterior)))
+(plot/histogram 
+  (map #(exp (:log-weight %)) importance-samples)
+  :bins 20 :normalize :probability)
 ;; @@
