@@ -5,10 +5,10 @@
             :url "https://opensource.org/licenses/MIT"}
   :plugins [[lein-gorilla "0.3.6"]]
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [anglican "1.0.0"]]
+                 [anglican "1.0.0"]
+                 [net.mikera/core.matrix "0.57.0"]
+                 [net.mikera/vectorz-clj "0.45.0"]]
                  ;; [org.clojure/data.priority-map "0.0.7"]
-                 ;; [net.mikera/core.matrix "0.52.2"]
-                 ;; [net.mikera/vectorz-clj "0.44.1"]
                  ;; [net.polyc0l0r/clj-hdf5 "0.2.2-SNAPSHOT"]]
   :target-path "target/%s"
   :jvm-opts ["-Xmx6g" "-Xms4g"]
