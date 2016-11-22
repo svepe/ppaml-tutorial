@@ -63,11 +63,6 @@
 ;; **
 
 ;; **
-;;; As we have discussed a common choice for the proposal is just the prior distribution, 
-;;; $$q(\mu) = \mathrm{Normal}(\mu | 1, \sqrt{5}).$$
-;; **
-
-;; **
 ;;; Write code to estimate the posterior @@\log p(\mu | y_1, y_2)@@ using importance sampling. Plot the empirical distribution obtained from the samples, as well as the resulting Gaussian.
 ;; **
 
