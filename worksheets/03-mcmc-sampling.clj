@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 1
 
 ;; **
-;;; # Importance Sampling and Anglican
+;;; # Markov Chain Monte Carlo Sampling and Anglican
 ;;; 
 ;; **
 
