@@ -2,8 +2,20 @@ Worksheets for the RAD seminar on probabilistic probramming.
 
 The worksheets are based on the materials for the [Probabilistic Programming for Advanced Machine Learning 2016 (PPAML16) summerschool](http://ppaml.galois.com/wiki/wiki/SummerSchools/2016/LectureMaterials), which you can find [here](https://bitbucket.org/probprog/ppaml-summer-school-2016).
 
-### Getting started
+### Worksheets
 
+1. [Intro to Clojure](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/01-intro-clojure.clj)
+    1. [Exercises](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/01-intro-clojure-exercises.clj)
+    2. [Soulutions](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/01-intro-clojure-solutions.clj)
+2. [Importance Sampling](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/02-importance-sampling.clj)
+    1. [Exercises](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/02-importance-sampling-exercises.clj)
+    2. [Solutions](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/02-importance-sampling-solutions.clj)
+
+3. [MCMC Sampling](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/03-mcmc-sampling.clj)
+    1. [Exercises](http://viewer.gorilla-repl.org/view.html?source=github&user=svepe&repo=radpp&path=/worksheets/03-mcmc-sampling-exercises.clj)
+    
+### Installation
+If you want to run the worksheets locally and attempt solving the exercises then you should follow these installation instructions.
 Make sure you have a recent Java Development Kit installed. To install the JDK on Ubuntu use:
 ```
 sudo apt-get install default-jdk
