@@ -57,7 +57,7 @@
 ;; **
 
 ;; @@
-(defquery seven-scientists [dataset]
+(defquery seven-scientists [measurements]
   ...complete-this...)
 
 (def mcmc-samples
