@@ -12,7 +12,7 @@
 (def ...complete-this... nil)
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;clojure-exercises/...complete-this...</span>","value":"#'clojure-exercises/...complete-this..."}
+;;; {"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"html","content":"<span class='clj-nil'>nil</span>","value":"nil"},{"type":"html","content":"<span class='clj-var'>#&#x27;clojure-exercises/...complete-this...</span>","value":"#'clojure-exercises/...complete-this..."}],"value":"[nil,#'clojure-exercises/...complete-this...]"}
 ;; <=
 
 ;; **
@@ -86,7 +86,7 @@
 ; => 6
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-long'>6</span>","value":"6"}
+;;; {"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"html","content":"<span class='clj-double'>6.0</span>","value":"6.0"},{"type":"html","content":"<span class='clj-long'>6</span>","value":"6"}],"value":"[6.0,6]"}
 ;; <=
 
 ;; **
@@ -110,7 +110,7 @@
 ; => 6
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-long'>6</span>","value":"6"}
+;;; {"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"html","content":"<span class='clj-double'>6.0</span>","value":"6.0"},{"type":"html","content":"<span class='clj-long'>6</span>","value":"6"}],"value":"[6.0,6]"}
 ;; <=
 
 ;; **
@@ -191,7 +191,7 @@
 ; => []
 ;; @@
 ;; =>
-;;; {"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[],"value":"[]"}
+;;; {"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-long'>0</span>","value":"0"},{"type":"html","content":"<span class='clj-long'>1</span>","value":"1"},{"type":"html","content":"<span class='clj-long'>4</span>","value":"4"},{"type":"html","content":"<span class='clj-long'>9</span>","value":"9"},{"type":"html","content":"<span class='clj-long'>16</span>","value":"16"}],"value":"[0 1 4 9 16]"},{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[],"value":"[]"}],"value":"[[0 1 4 9 16],[]]"}
 ;; <=
 
 ;; **
@@ -338,9 +338,5 @@
 ; => 0
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-nil'>nil</span>","value":"nil"}
+;;; {"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"list-like","open":"","close":"","separator":"</pre><pre>","items":[{"type":"html","content":"<span class='clj-long'>10</span>","value":"10"},{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-long'>1</span>","value":"1"},{"type":"html","content":"<span class='clj-long'>3</span>","value":"3"},{"type":"html","content":"<span class='clj-long'>6</span>","value":"6"},{"type":"html","content":"<span class='clj-long'>10</span>","value":"10"}],"value":"[1 3 6 10]"}],"value":"[10,[1 3 6 10]]"},{"type":"html","content":"<span class='clj-nil'>nil</span>","value":"nil"}],"value":"[[10,[1 3 6 10]],nil]"}
 ;; <=
-
-;; @@
-
-;; @@

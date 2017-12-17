@@ -15,9 +15,6 @@
 
 (def ...complete-this... nil)
 ;; @@
-;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;posterior-inference-exercises/...complete-this...</span>","value":"#'posterior-inference-exercises/...complete-this..."}
-;; <=
 
 ;; **
 ;;; ## Exercise 1: Inference in a conjugate Gaussian model
@@ -75,9 +72,6 @@
 (def importance-samples
   ...complete-this...)
 ;; @@
-;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;posterior-inference-exercises/importance-samples</span>","value":"#'posterior-inference-exercises/importance-samples"}
-;; <=
 
 ;; **
 ;;; # Exercise 2: Generative Curve Fitting
@@ -122,9 +116,6 @@
 (def ys (map noisy-f xs))
 (plot/list-plot (map vector xs ys) :symbol-size 5)
 ;; @@
-;; =>
-;;; {"type":"vega","content":{"width":400,"height":247.2187957763672,"padding":{"top":10,"left":55,"bottom":40,"right":10},"data":[{"name":"f46251f0-e5ce-481f-b5bb-208b683d9084","values":[{"x":-10,"y":47.27881673135647},{"x":-9.5,"y":42.53699770814047},{"x":-9.0,"y":29.346490331331086},{"x":-8.5,"y":26.425546991372098},{"x":-8.0,"y":22.514858836787376},{"x":-7.5,"y":21.31074917647966},{"x":-7.0,"y":8.873596627476527},{"x":-6.5,"y":13.016527650182317},{"x":-6.0,"y":8.319581348372257},{"x":-5.5,"y":3.6233636155523854},{"x":-5.0,"y":7.560321261488125},{"x":-4.5,"y":5.581338777218533},{"x":-4.0,"y":2.163987362021305},{"x":-3.5,"y":5.2565855509787855},{"x":-3.0,"y":8.161840056820424},{"x":-2.5,"y":-4.49913557229799},{"x":-2.0,"y":-0.5624338236424902},{"x":-1.5,"y":12.265532463582998},{"x":-1.0,"y":3.566766953541927},{"x":-0.5,"y":-0.004786000440235277},{"x":0.0,"y":3.376241153530865},{"x":0.5,"y":1.2850862961235472},{"x":1.0,"y":3.235880657886796},{"x":1.5,"y":-0.5679115130777104},{"x":2.0,"y":0.40050053049670964},{"x":2.5,"y":0.8333103693192048},{"x":3.0,"y":-1.558732976814164},{"x":3.5,"y":5.011880888325108},{"x":4.0,"y":-11.722648694624116},{"x":4.5,"y":-3.3511036373911147},{"x":5.0,"y":3.1168938998083062},{"x":5.5,"y":0.32377941485886286},{"x":6.0,"y":-16.221576620767383},{"x":6.5,"y":-2.490173840532803},{"x":7.0,"y":-13.067121732884953},{"x":7.5,"y":-11.586374733992347},{"x":8.0,"y":-29.607436307987676},{"x":8.5,"y":-26.08138270221496},{"x":9.0,"y":-27.32740917046169},{"x":9.5,"y":-33.943544863219486}]}],"marks":[{"type":"symbol","from":{"data":"f46251f0-e5ce-481f-b5bb-208b683d9084"},"properties":{"enter":{"x":{"scale":"x","field":"data.x"},"y":{"scale":"y","field":"data.y"},"fill":{"value":"steelblue"},"fillOpacity":{"value":1}},"update":{"shape":"circle","size":{"value":5},"stroke":{"value":"transparent"}},"hover":{"size":{"value":15},"stroke":{"value":"white"}}}}],"scales":[{"name":"x","type":"linear","range":"width","zero":false,"domain":{"data":"f46251f0-e5ce-481f-b5bb-208b683d9084","field":"data.x"}},{"name":"y","type":"linear","range":"height","nice":true,"zero":false,"domain":{"data":"f46251f0-e5ce-481f-b5bb-208b683d9084","field":"data.y"}}],"axes":[{"type":"x","scale":"x"},{"type":"y","scale":"y"}]},"value":"#gorilla_repl.vega.VegaView{:content {:width 400, :height 247.2188, :padding {:top 10, :left 55, :bottom 40, :right 10}, :data [{:name \"f46251f0-e5ce-481f-b5bb-208b683d9084\", :values ({:x -10, :y 47.27881673135647} {:x -9.5, :y 42.53699770814047} {:x -9.0, :y 29.346490331331086} {:x -8.5, :y 26.425546991372098} {:x -8.0, :y 22.514858836787376} {:x -7.5, :y 21.31074917647966} {:x -7.0, :y 8.873596627476527} {:x -6.5, :y 13.016527650182317} {:x -6.0, :y 8.319581348372257} {:x -5.5, :y 3.6233636155523854} {:x -5.0, :y 7.560321261488125} {:x -4.5, :y 5.581338777218533} {:x -4.0, :y 2.163987362021305} {:x -3.5, :y 5.2565855509787855} {:x -3.0, :y 8.161840056820424} {:x -2.5, :y -4.49913557229799} {:x -2.0, :y -0.5624338236424902} {:x -1.5, :y 12.265532463582998} {:x -1.0, :y 3.566766953541927} {:x -0.5, :y -0.004786000440235277} {:x 0.0, :y 3.376241153530865} {:x 0.5, :y 1.2850862961235472} {:x 1.0, :y 3.235880657886796} {:x 1.5, :y -0.5679115130777104} {:x 2.0, :y 0.40050053049670964} {:x 2.5, :y 0.8333103693192048} {:x 3.0, :y -1.558732976814164} {:x 3.5, :y 5.011880888325108} {:x 4.0, :y -11.722648694624116} {:x 4.5, :y -3.3511036373911147} {:x 5.0, :y 3.1168938998083062} {:x 5.5, :y 0.32377941485886286} {:x 6.0, :y -16.221576620767383} {:x 6.5, :y -2.490173840532803} {:x 7.0, :y -13.067121732884953} {:x 7.5, :y -11.586374733992347} {:x 8.0, :y -29.607436307987676} {:x 8.5, :y -26.08138270221496} {:x 9.0, :y -27.32740917046169} {:x 9.5, :y -33.943544863219486})}], :marks [{:type \"symbol\", :from {:data \"f46251f0-e5ce-481f-b5bb-208b683d9084\"}, :properties {:enter {:x {:scale \"x\", :field \"data.x\"}, :y {:scale \"y\", :field \"data.y\"}, :fill {:value \"steelblue\"}, :fillOpacity {:value 1}}, :update {:shape \"circle\", :size {:value 5}, :stroke {:value \"transparent\"}}, :hover {:size {:value 15}, :stroke {:value \"white\"}}}}], :scales [{:name \"x\", :type \"linear\", :range \"width\", :zero false, :domain {:data \"f46251f0-e5ce-481f-b5bb-208b683d9084\", :field \"data.x\"}} {:name \"y\", :type \"linear\", :range \"height\", :nice true, :zero false, :domain {:data \"f46251f0-e5ce-481f-b5bb-208b683d9084\", :field \"data.y\"}}], :axes [{:type \"x\", :scale \"x\"} {:type \"y\", :scale \"y\"}]}}"}
-;; <=
 
 ;; **
 ;;; In order to define a multivariate normal distribution you should use some standard matrix operations defined in the module `clojure.core.matrix`.
@@ -148,9 +139,6 @@
 (dot [1 1 1] [1 1 1])
 
 ;; @@
-;; =>
-;;; {"type":"html","content":"<span class='clj-double'>3.0</span>","value":"3.0"}
-;; <=
 
 ;; @@
 ;; Calculates c(x; w, m) where m is encoded in the length of w
@@ -163,9 +151,6 @@
   (defquery fit-curve [xs ys]
     ...complete-this...))
 ;; @@
-;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;posterior-inference-exercises/fit-curve</span>","value":"#'posterior-inference-exercises/fit-curve"}
-;; <=
 
 ;; **
 ;;; What is the influence of the hyperparameters @@m@@, @@w@@, @@y@@ and the number of samples on the final fit? Try to put some priors on those as well. You may also find it interesting to plot the obtained samples - you can vary the line width according to the log-weight of the sample.

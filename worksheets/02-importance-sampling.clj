@@ -108,7 +108,7 @@
 ;;; $$
 ;;; 
 ;;; ---
-;;; **MATH EXERCISE** Show that the average of the unnormalized importance weights is an unbiased estimate of the   evidence (i.e. of the normalizing constant for the posterior distribution): that is, show that
+;;; **MATH EXERCISE** Show that the average of the unnormalized importance weights is an unbiased estimate of the   evidence (i.e. of the normalizing constant for the posterior distribution), that is:
 ;;; $$\mathbb{E}\left[\frac{1}{N} \sum\_{i=1}^N w(\theta\_i)\right] = p(\mathcal{D})$$
 ;;; 
 ;;; ---
@@ -152,7 +152,7 @@
 ;;; For this we can easily look up and/or compute the ground truth 
 ;;; 
 ;;; $$
-;;; p(\theta>0.7 | y = true) = 0.448 = 1 - \mathrm{BetaCDF}(6,3,0.7)
+;;; p(\theta>0.7 | y = true) = 0.448 = 1 - \mathrm{BetaCDF}(0.7|6,3)
 ;;; $$
 ;;; 
 ;; **
@@ -363,6 +363,8 @@
 ;; **
 
 ;; @@
+(def data [false, false, false, false])
+
 (defquery many-flips [y-values]
   (let [theta (sample (beta 5 3))
         outcome-dist (flip theta)]
